@@ -1,0 +1,19 @@
+﻿.outer{
+    flex-flow: row nowrap;
+    padding: .2rem;
+    box-shadow: 1px 1px 1px .5px #7e7e7e9c;
+    position: fixed;
+    background-color: aliceblue;
+    border-radius: .5rem;
+}
+.button{
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.8rem;
+    color: black;
+    background-color: transparent;
+}
+.indi{
+    position: fixed;
+}

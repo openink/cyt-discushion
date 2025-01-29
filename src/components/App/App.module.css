@@ -1,0 +1,6 @@
+﻿.sidebar{
+    display: flex;
+    flex-flow: column nowrap;
+    background-color: #ededed;
+    border-right: solid .125rem #d4d4d4;
+}

@@ -1,0 +1,14 @@
+﻿.dc-paragraph{
+    padding: .2rem .125rem;
+    background-color: aliceblue;
+    border-radius: .125rem;
+    position: relative;
+}
+.dc-paragraph:has( > .ProseMirror-trailingBreak)::after{
+    /*todo:*/
+    content: /*attr(placeholder)*/"输入/发起命令...";
+    color: grey;
+    display: block;
+    position: absolute;
+    top: .2rem;
+}

@@ -1,0 +1,7 @@
+﻿.outer{
+    flex: 1;
+    height: 100%;
+    cursor: text;
+    overflow-x: clip;
+    overflow-y: auto;
+}

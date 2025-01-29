@@ -1,0 +1,46 @@
+::selection{
+    background-color: var(--c-selection);
+}
+::-moz-selection{
+    background-color: var(--c-selection);
+}
+html{
+    font-size: var(--fontsize);
+}
+*{
+    outline: none;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-smooth: always;
+    transition: background-color .1s;
+    line-height: normal;
+}
+/*正常化浏览器行为*/
+*[contenteditable]:not([contenteditable="false"]){
+    -moz-user-modify: read-write;
+    -webkit-user-modify: read-write-plaintext-only;
+    user-modify: read-write-plaintext-only;
+}
+*[contenteditable]:not([contenteditable="false"]) *{
+    white-space: pre-wrap;
+    word-wrap: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+#root{
+    height: 100vh;/*兼容*/
+    height: 100dvh;
+    width: 100vw;/*兼容*/
+    width: 100dvw;
+    overflow-x: hidden;
+    overflow-y: auto;/*兼容*/
+    overflow-y: overlay;
+    overflow-y: hidden;
+    display: flex;
+    flex-flow: row nowrap;
+}
+noscript{
+    display: grid;
+    place-items: center;
+}

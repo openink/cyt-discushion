@@ -1,0 +1,13 @@
+﻿.tiptap{
+    width: 100%;
+    padding: 3rem 4rem 40dvh;
+    display: flex;
+    flex-flow: column nowrap;
+    gap: .125rem;
+}
+.ProseMirror-trailingBreak{
+    user-select: none;
+}
+.ProseMirror-trailingBreak::selection{
+    background-color: transparent;
+}
