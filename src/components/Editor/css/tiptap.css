@@ -1,0 +1,11 @@
+﻿.tiptap{
+    box-sizing: border-box;
+    width: 100%;
+    padding: 3rem 4rem 40dvh;
+}
+.ProseMirror-trailingBreak:only-child{
+    user-select: none;
+}
+.ProseMirror-trailingBreak:only-child::selection{
+    background-color: transparent;
+}

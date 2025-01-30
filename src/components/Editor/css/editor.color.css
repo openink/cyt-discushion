@@ -35,36 +35,37 @@
 .dc-fc-brown{
     color: #835432;
 }
-.dc-fc-grey{
-    color: #777;
+
+.dc-bc-grey{
+    background-color: #777;
 }
-.dc-fc-light-grey{
-    color: #ccc;
+.dc-bc-light-grey{
+    background-color: #ccc;
 }
-.dc-fc-blue{
-    color: #3c44aa;
+.dc-bc-blue{
+    background-color: #3c44aa;
 }
-.dc-fc-red{
-    color: #ca4843;
+.dc-bc-red{
+    background-color: #ca4843;
 }
-.dc-fc-yellow{
-    color: #cf8e30;
+.dc-bc-yellow{
+    background-color: #cf8e30;
 }
-.dc-fc-green{
-    color: #1f874f;
+.dc-bc-green{
+    background-color: #1f874f;
 }
-.dc-fc-purple{
-    color: #985bc7;
+.dc-bc-purple{
+    background-color: #985bc7;
 }
-.dc-fc-pink{
-    color: #c4498a;
+.dc-bc-pink{
+    background-color: #c4498a;
 }
-.dc-fc-orange{
-    color: #d07918;
+.dc-bc-orange{
+    background-color: #d07918;
 }
-.dc-fc-magenta{
-    color: #c74ebd;
+.dc-bc-magenta{
+    background-color: #c74ebd;
 }
-.dc-fc-brown{
-    color: #835432;
+.dc-bc-brown{
+    background-color: #835432;
 }

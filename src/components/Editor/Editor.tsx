@@ -1,20 +1,16 @@
 ﻿import { useEffect } from "react";
 import styles from "./Editor.module.css";
-import "./tiptap.css";
-import "./editor.css";
-import "./editor.color.css";
+import "./css/tiptap.css";
+import "./css/editor.css";
+import "./css/editor.color.css";
 import localforage from "localforage";
-import Toolbar from "../Toolbar/Toolbar";
 import { v4 } from "uuid";
-import { EditorContent, Extension, JSONContent, useEditor } from "@tiptap/react";
+import Toolbar from "../Toolbar/Toolbar";
+import { EditorContent, JSONContent, useEditor } from "@tiptap/react";
 import Document from "@tiptap/extension-document";
 import Text from "@tiptap/extension-text";
 import Paragraph from "@tiptap/extension-paragraph";
 import History from "@tiptap/extension-history";
-import Blockquote from "@tiptap/extension-blockquote";
-import ListItem from "@tiptap/extension-list-item";
-import BulletList from "@tiptap/extension-bullet-list";
-import OrderedList from "@tiptap/extension-ordered-list";
 import { all, createLowlight } from "lowlight";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import HardBreak from "@tiptap/extension-hard-break";
@@ -34,42 +30,13 @@ import Superscript from "@tiptap/extension-superscript";
 import TextStyle from "@tiptap/extension-text-style";
 import Underline from "@tiptap/extension-underline";
 
+import BlockID from "./extensions/blockID";
+import Blockquote from "./extensions/blockquote";
+import BulletList from "./extensions/bulletList";
 
-function findFGColor(element :HTMLElement) :string | null{
-    for(let i = 0; i < element.classList.length; i++) if(element.classList[i].match(/^dc-fc-*$/)) return element.classList[i].replace("dc-fc-", "");
-    return null;
-}
+const lowlight = createLowlight(all);
 
-function findBGColor(element :HTMLElement) :string | null{
-    for(let i = 0; i < element.classList.length; i++) if(element.classList[i].match(/^dc-bc-*$/)) return element.classList[i].replace("dc-bc-", "");
-    return null;
-}
-
-const
-lowlight = createLowlight(all),
-BlockID = Extension.create({
-    addGlobalAttributes(){return[{
-        types: ["paragraph", "blockquote", "bulletList", "orderedList", "heading", "horizontalRule", "image", "taskItem"],
-        attributes: {
-            id: {
-                default: null,
-                isRequired: true,
-                keepOnSplit: false,
-                parseHTML: element=>element.getAttribute("data-block-id"),
-                renderHTML: attrs=>({"data-block-id": attrs.id})
-            }
-        }
-    }]},
-    addKeyboardShortcuts(){return{
-        Enter: ({editor})=>{
-            if(editor.state.selection.$from.node().textContent === "" && editor.state.selection.$from.depth > 1){
-                console.log("534");
-                return true;
-            }
-            else return this.editor.chain().splitBlock().updateAttributes(editor.state.selection.$from.node().type.name, {id: v4()}).run();
-        }
-    }}
-});
+(window as any).l = localforage;
 
 export default function Editor(){
     const editor = useEditor({
@@ -77,26 +44,16 @@ export default function Editor(){
             Document,
             Text,
             Paragraph.extend({
-                renderHTML: ({HTMLAttributes})=>["div", {...HTMLAttributes, class: "dc-paragraph"}, 0]
+                renderHTML: ({HTMLAttributes})=>["div", {...HTMLAttributes, class: "dc-p"}, 0]
             }),
             History,
             BlockID,
 
             //块级元素
 
-            Blockquote.extend({
-                addAttributes(){return{
-                    color: {
-                        default: null,
-                        isRequired: true,
-                        parseHTML: element=>findFGColor(element),
-                        renderHTML: attrs=>({class: attrs.color})
-                    }
-                }}
-            }),
-            ListItem,
+            Blockquote,
             BulletList,
-            OrderedList,
+            //OrderedList,
             CodeBlockLowlight.configure({lowlight}),
             HardBreak,
             Heading.configure({levels: [1, 2, 3, 4]}),
@@ -127,16 +84,17 @@ export default function Editor(){
     });
     useEffect(()=>{(async ()=>{
         const iniContent = await localforage.getItem<JSONContent>("content");
-        if(iniContent) editor?.commands.setContent(iniContent);
+        if(iniContent) editor!.commands.setContent(iniContent);
+        else editor!.commands.setContent({
+            type: "doc",
+            content: [{
+                type: "paragraph",
+                attrs: {id: v4()},
+                content: []
+            }]
+        });
     })()}, []);
-    return(<div className={styles.outer}>
-        <EditorContent editor={editor} />
-    </div>);
-}
-
-(window as any).l = localforage;
-
-function ViewInner(){
-
-    return null;
+    return(
+        <EditorContent editor={editor} className={`${styles.outer} dc-container-outer`} />
+    );
 }

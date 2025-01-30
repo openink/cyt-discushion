@@ -1,0 +1,44 @@
+﻿.dc-container{
+    display: flex;
+    flex-flow: column nowrap;
+    gap: .125rem;
+}
+.dc-container-outer > *{
+    display: flex;
+    flex-flow: column nowrap;
+    gap: .125rem;
+}
+.dc-p{
+    padding: .2rem .125rem;
+    background-color: aliceblue;
+    border-radius: .125rem;
+    position: relative;
+}
+.dc-p:has( > .ProseMirror-trailingBreak:only-child)::after{
+    /*todo:*/
+    content: /*attr(placeholder)*/"输入 / 发起命令...";
+    color: grey;
+    display: block;
+    position: absolute;
+    top: .2rem;
+    pointer-events: none;
+}
+.dc-ul{
+    display: flex;
+    flex-flow: row nowrap;
+}
+.dc-ul-marker-outer{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    width: 1em;
+    padding: 0 .25em 0 .2em;
+}
+.dc-ul-marker::before{
+    content: var(--ul-marker);
+    font-size: 1.5em;
+    line-height: 1em;
+}
+.dc-ul-content{
+    flex: 1;
+}
