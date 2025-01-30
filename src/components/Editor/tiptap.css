@@ -1,13 +1,14 @@
 ﻿.tiptap{
+    box-sizing: border-box;
     width: 100%;
     padding: 3rem 4rem 40dvh;
     display: flex;
     flex-flow: column nowrap;
     gap: .125rem;
 }
-.ProseMirror-trailingBreak{
+.ProseMirror-trailingBreak:first-child{
     user-select: none;
 }
-.ProseMirror-trailingBreak::selection{
+.ProseMirror-trailingBreak:first-child::selection{
     background-color: transparent;
 }

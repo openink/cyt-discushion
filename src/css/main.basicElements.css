@@ -80,7 +80,7 @@ p{
     /*text-indent: 2em;*/
     line-height: 1.5em;
 }
-/*hr{
+hr{
     height: .125rem;
     width: 98%;
     margin-block-start: .5em;
@@ -88,7 +88,7 @@ p{
     padding: 0;
     border: none;
     background-color: var(--c-grey-4);
-}*/
+}
 code{
     font-family: monospace;
     font-size: 1.1em;

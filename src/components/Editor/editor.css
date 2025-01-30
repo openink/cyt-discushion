@@ -6,9 +6,13 @@
 }
 .dc-paragraph:has( > .ProseMirror-trailingBreak)::after{
     /*todo:*/
-    content: /*attr(placeholder)*/"输入/发起命令...";
+    content: /*attr(placeholder)*/"输入 / 发起命令...";
     color: grey;
     display: block;
     position: absolute;
     top: .2rem;
+    pointer-events: none;
+}
+.tiptap blockquote{
+    
 }
