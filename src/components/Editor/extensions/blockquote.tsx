@@ -23,7 +23,9 @@ const Blockquote = Node.create({
 export default Blockquote;
 
 function BlockquoteComp(props :NodeViewProps){
-    return(<NodeViewWrapper>
-        <NodeViewContent />
+    return(<NodeViewWrapper className="dc-bq" style={{
+        borderLeftColor: "#000"
+    }}>
+        <NodeViewContent className="dc-container-outer" />
     </NodeViewWrapper>);
 }

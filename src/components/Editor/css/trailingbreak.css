@@ -1,0 +1,18 @@
+﻿.ProseMirror-trailingBreak:only-child{
+    user-select: none;
+}
+.ProseMirror-trailingBreak:only-child::selection{
+    background-color: transparent;
+}
+.dc-p:has( > .ProseMirror-trailingBreak:only-child){
+    user-select: none !important;
+}
+.dc-p:has( > .ProseMirror-trailingBreak:only-child)::after{
+    /*todo:*/
+    content: /*attr(placeholder)*/"输入 / 发起命令...";
+    color: grey;
+    display: block;
+    position: absolute;
+    top: .2rem;
+    pointer-events: none;
+}

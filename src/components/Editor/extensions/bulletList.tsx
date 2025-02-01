@@ -29,6 +29,6 @@ function BulletListComp(props :NodeViewProps){
         <div className="dc-ul-marker-outer"><div className="dc-ul-marker" style={{
             "--ul-marker": `"${depth_o3 ? depth_o3 === 1 ? "◦" : "▪" : "•"}"`
         } as React.CSSProperties} /></div>
-        <NodeViewContent className="dc-container-outer dc-ul-content" />
+        <NodeViewContent className="dc-container-outer" />
     </NodeViewWrapper>);
 }

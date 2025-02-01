@@ -1,28 +1,30 @@
-﻿.dc-container{
+﻿.tiptap{
+    box-sizing: border-box;
+    width: 100%;
+    padding: 3rem 4rem 40dvh;
+}
+
+.dc-container{
     display: flex;
     flex-flow: column nowrap;
     gap: .125rem;
+}
+.dc-container-outer{
+    flex: 1;
 }
 .dc-container-outer > *{
     display: flex;
     flex-flow: column nowrap;
     gap: .125rem;
 }
+
 .dc-p{
     padding: .2rem .125rem;
     background-color: aliceblue;
     border-radius: .125rem;
     position: relative;
 }
-.dc-p:has( > .ProseMirror-trailingBreak:only-child)::after{
-    /*todo:*/
-    content: /*attr(placeholder)*/"输入 / 发起命令...";
-    color: grey;
-    display: block;
-    position: absolute;
-    top: .2rem;
-    pointer-events: none;
-}
+
 .dc-ul{
     display: flex;
     flex-flow: row nowrap;
@@ -39,6 +41,14 @@
     font-size: 1.5em;
     line-height: 1em;
 }
-.dc-ul-content{
-    flex: 1;
+
+.dc-bq{
+    margin: 0;
+    padding: 0;
+    margin-inline-start: .2em;
+    padding-inline-start: .5em;
+    margin-block-start: .2em;
+    margin-block-end: .2em;
+    border-left-style: solid;
+    border-left-width: .2em;
 }

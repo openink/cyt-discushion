@@ -2,11 +2,10 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./css/main.css";
 import "./css/main.body.css";
-import "./css/main.scrollbar.css";
 import "./css/main.basicElements.css";
 import "./css/main.varibles.css";
 import App from "./components/App/App.tsx";
-import { dataInit } from "./data.ts";
+import { dataInit } from "./data/block.ts";
 import { mountGetPx } from "./utils/css.ts";
 
 dataInit();

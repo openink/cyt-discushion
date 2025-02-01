@@ -1,10 +1,10 @@
 ﻿import { useEffect } from "react";
 import styles from "./Editor.module.css";
-import "./css/tiptap.css";
 import "./css/editor.css";
 import "./css/editor.color.css";
-import localforage from "localforage";
+import "./css/trailingbreak.css";
 import { v4 } from "uuid";
+import { useLiveQuery } from "dexie-react-hooks";
 import Toolbar from "../Toolbar/Toolbar";
 import { EditorContent, JSONContent, useEditor } from "@tiptap/react";
 import Document from "@tiptap/extension-document";
@@ -33,10 +33,12 @@ import Underline from "@tiptap/extension-underline";
 import BlockID from "./extensions/blockID";
 import Blockquote from "./extensions/blockquote";
 import BulletList from "./extensions/bulletList";
+import { getDocument } from "../../data/block";
+import db from "../../data/db";
+import { DcConfigs } from "../../data/config";
+
 
 const lowlight = createLowlight(all);
-
-(window as any).l = localforage;
 
 export default function Editor(){
     const editor = useEditor({
@@ -53,6 +55,7 @@ export default function Editor(){
 
             Blockquote,
             BulletList,
+            
             //OrderedList,
             CodeBlockLowlight.configure({lowlight}),
             HardBreak,
@@ -83,7 +86,8 @@ export default function Editor(){
         }
     });
     useEffect(()=>{(async ()=>{
-        const iniContent = await localforage.getItem<JSONContent>("content");
+        const iniContent = await getDocument(await db.table<DcConfigs>("configs").get("c"));
+        //const iniContent = await localforage.getItem<JSONContent>("content");
         if(iniContent) editor!.commands.setContent(iniContent);
         else editor!.commands.setContent({
             type: "doc",
