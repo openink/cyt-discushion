@@ -1,0 +1,23 @@
+﻿.outer{
+    display: flex;
+    flex-flow: row nowrap;
+    background-color: #ededed;
+    border-right: solid .125rem #d4d4d4;
+}
+.inner{
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1rem;
+    width: 100%;
+}
+.resizerOuter{
+    position: relative;
+}
+.resizer{
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: .5rem;
+    cursor: col-resize;
+}

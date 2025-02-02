@@ -1,6 +1,6 @@
 ﻿import { UUID } from "./block";
 
-export const dcConfigKeys = ["currentDocument"] as const;
+export const dcConfigKeys = ["currentDocument", "sidebarWidth"] as const;
 export type DcConfigTypes = typeof dcConfigKeys[number];
 
 export interface DcConfigEntry<T extends DcConfigTypes>{
@@ -9,6 +9,6 @@ export interface DcConfigEntry<T extends DcConfigTypes>{
 }
 
 export interface DcConfigs{
-    currentDocument :UUID | null | undefined;
-
+    currentDocument :UUID | null;
+    sidebarWidth :number;
 }

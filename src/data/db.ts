@@ -1,8 +1,8 @@
 ﻿import Dexie, { EntityTable } from "dexie";
-import { BlockJSON, BlockTypes } from "./block";
+import { BlockJSON, BlockTypes, UUID } from "./block";
 import { DcConfigs, DcConfigEntry, DcConfigTypes } from "./config";
 
-const db = new Dexie("discushion") as Dexie & {
+export const db = new Dexie("discushion") as Dexie & {
     blocks :EntityTable<BlockJSON<BlockTypes>, "id">,
     configs :EntityTable<DcConfigEntry<DcConfigTypes>, "key">,
 };
@@ -12,4 +12,5 @@ db.version(1).stores({
     configs: "key"
 });
 
-export default db;
+export const blockTable = db.table<BlockJSON<BlockTypes>, UUID>("blocks");
+export const configTable = db.table<DcConfigEntry<DcConfigTypes>, DcConfigTypes>("configs");

@@ -1,15 +1,16 @@
-﻿import { useEffect } from "react";
+﻿import { Suspense, useEffect, useMemo } from "react";
 import styles from "./Editor.module.css";
 import "./css/editor.css";
 import "./css/editor.color.css";
 import "./css/trailingbreak.css";
 import { v4 } from "uuid";
-import { useLiveQuery } from "dexie-react-hooks";
+import { configTable } from "../../data/db";
+import { getDocument } from "../../data/block";
+import { DcConfigEntry, DcConfigTypes } from "../../data/config";
 import Toolbar from "../Toolbar/Toolbar";
-import { EditorContent, JSONContent, useEditor } from "@tiptap/react";
+import { EditorContent, useEditor } from "@tiptap/react";
 import Document from "@tiptap/extension-document";
 import Text from "@tiptap/extension-text";
-import Paragraph from "@tiptap/extension-paragraph";
 import History from "@tiptap/extension-history";
 import { all, createLowlight } from "lowlight";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
@@ -30,13 +31,10 @@ import Superscript from "@tiptap/extension-superscript";
 import TextStyle from "@tiptap/extension-text-style";
 import Underline from "@tiptap/extension-underline";
 
+import Paragraph from "./extensions/paragraph";
 import BlockID from "./extensions/blockID";
 import Blockquote from "./extensions/blockquote";
 import BulletList from "./extensions/bulletList";
-import { getDocument } from "../../data/block";
-import db from "../../data/db";
-import { DcConfigs } from "../../data/config";
-
 
 const lowlight = createLowlight(all);
 
@@ -45,9 +43,7 @@ export default function Editor(){
         extensions: [
             Document,
             Text,
-            Paragraph.extend({
-                renderHTML: ({HTMLAttributes})=>["div", {...HTMLAttributes, class: "dc-p"}, 0]
-            }),
+            Paragraph,
             History,
             BlockID,
 
@@ -82,21 +78,15 @@ export default function Editor(){
         ],
         injectCSS: false,
         onUpdate(props){
-            localforage.setItem("content", props.editor.getJSON());
+            console.log(props);
         }
     });
     useEffect(()=>{(async ()=>{
-        const iniContent = await getDocument(await db.table<DcConfigs>("configs").get("c"));
-        //const iniContent = await localforage.getItem<JSONContent>("content");
-        if(iniContent) editor!.commands.setContent(iniContent);
-        else editor!.commands.setContent({
-            type: "doc",
-            content: [{
-                type: "paragraph",
-                attrs: {id: v4()},
-                content: []
-            }]
-        });
+        const
+        currentDocumentA = await configTable.get("currentDocument"),
+        iniContent = await getDocument(currentDocumentA ? currentDocumentA.value : currentDocumentA);
+        console.log(iniContent);
+        editor!.commands.setContent(iniContent);
     })()}, []);
     return(
         <EditorContent editor={editor} className={`${styles.outer} dc-container-outer`} />
