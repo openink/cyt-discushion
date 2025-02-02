@@ -5,9 +5,8 @@ import "./css/editor.color.css";
 import "./css/trailingbreak.css";
 import { v4 } from "uuid";
 import { configTable } from "../../data/db";
-import { getDocument } from "../../data/block";
+import { getDocument, UUID } from "../../data/block";
 import { DcConfigEntry, DcConfigTypes } from "../../data/config";
-import Toolbar from "../Toolbar/Toolbar";
 import { EditorContent, useEditor } from "@tiptap/react";
 import Document from "@tiptap/extension-document";
 import Text from "@tiptap/extension-text";
@@ -84,7 +83,7 @@ export default function Editor(){
     useEffect(()=>{(async ()=>{
         const
         currentDocumentA = await configTable.get("currentDocument"),
-        iniContent = await getDocument(currentDocumentA ? currentDocumentA.value : currentDocumentA);
+        iniContent = await getDocument(currentDocumentA ? currentDocumentA.value as UUID | null : currentDocumentA);
         console.log(iniContent);
         editor!.commands.setContent(iniContent);
     })()}, []);
