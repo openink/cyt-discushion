@@ -1,0 +1,11 @@
+﻿.container{
+    display: flex;
+    flex-flow: column nowrap;
+}
+.entry{
+    display: flex;
+    flex-flow: row nowrap;
+    padding: 0 .5rem;
+    color: var(--c-grey);
+    font-weight: bold;
+}

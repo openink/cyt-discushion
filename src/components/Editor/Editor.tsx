@@ -1,12 +1,10 @@
-﻿import { Suspense, useEffect, useMemo } from "react";
+﻿import { useEffect } from "react";
 import styles from "./Editor.module.css";
 import "./css/editor.css";
 import "./css/editor.color.css";
 import "./css/trailingbreak.css";
-import { v4 } from "uuid";
 import { configTable } from "../../data/db";
 import { getDocument, UUID } from "../../data/block";
-import { DcConfigEntry, DcConfigTypes } from "../../data/config";
 import { EditorContent, useEditor } from "@tiptap/react";
 import Document from "@tiptap/extension-document";
 import Text from "@tiptap/extension-text";
@@ -34,46 +32,33 @@ import Paragraph from "./extensions/paragraph";
 import BlockID from "./extensions/blockID";
 import Blockquote from "./extensions/blockquote";
 import BulletList from "./extensions/bulletList";
+import OrderedList from "./extensions/orderedList";
 
 const lowlight = createLowlight(all);
 
 export default function Editor(){
     const editor = useEditor({
         extensions: [
-            Document,
-            Text,
-            Paragraph,
-            History,
-            BlockID,
+            //技术性元素
+            Text, History, BlockID,
 
             //块级元素
-
-            Blockquote,
-            BulletList,
+            Document, Paragraph, Blockquote, BulletList, OrderedList, Heading.configure({levels: [1, 2, 3, 4]}),
             
-            //OrderedList,
-            CodeBlockLowlight.configure({lowlight}),
-            HardBreak,
-            Heading.configure({levels: [1, 2, 3, 4]}),
-            HorizontalRule,
-            Image,
-            TaskItem,
-            TaskList,
-
             //行内元素
 
-            Bold,
-            Code,
-            Highlight,
-            Italic,
-            Link,
-            Strike,
-            Subscript,
-            Superscript,
-            Underline,
+            //标记元素
+            Bold, Italic, Underline, Strike, Code, Link, Highlight, Superscript, Subscript, 
+            //
+            CodeBlockLowlight.configure({lowlight}),
+            HardBreak,
+            HorizontalRule,
+            Image,
+            //TaskItem,
+            //TaskList,
+            
             //这是一个基底扩展，用来做文字颜色
             TextStyle,
-
         ],
         injectCSS: false,
         onUpdate(props){

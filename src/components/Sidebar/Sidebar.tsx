@@ -1,8 +1,9 @@
 ﻿import { useEffect, useState } from "react";
 import styles from "./Sidebar.module.css";
 import { configTable } from "../../data/db";
-import Menu from "../Menu/Menu";
-import DocumentList from "../DocumentList/DocumentList";
+import DocumentList from "./DocumentList";
+import TopMenu from "./menu/TopMenu";
+import BottomMenu from "./menu/BottomMenu";
 
 const defaultWidth = 200;
 
@@ -19,8 +20,9 @@ export default function Sidebar(){
     })()}, []);
     return(<div className={styles.outer} style={{width}}>
         <div className={styles.inner}>
-            <Menu />
+            <TopMenu />
             <DocumentList />
+            <BottomMenu />
         </div>
         <div className={styles.resizerOuter}><div className={styles.resizer} /></div>
     </div>);

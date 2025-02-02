@@ -1,7 +1,7 @@
 ﻿.outer{
     display: flex;
     flex-flow: row nowrap;
-    background-color: #ededed;
+    background-color: var(--c-grey-10);
     border-right: solid .125rem #d4d4d4;
 }
 .inner{

@@ -2,7 +2,7 @@
 import { NodeViewContent, NodeViewWrapper, ReactNodeViewRenderer } from "@tiptap/react";
 
 const BulletList = Node.create({
-    name: "bulletlist",
+    name: "_bulletList",
     content: "paragraph block*",
     group: "block list",
     defining: true,
