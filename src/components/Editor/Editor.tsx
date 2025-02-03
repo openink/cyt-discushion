@@ -43,7 +43,7 @@ import Superscript from "@tiptap/extension-superscript";
 import Subscript from "@tiptap/extension-subscript";
 
 const lowlight = createLowlight(all);
-//test
+
 export default function Editor(){
     const editor = useEditor({
         extensions: [
