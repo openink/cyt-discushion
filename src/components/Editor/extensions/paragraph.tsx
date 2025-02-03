@@ -1,14 +1,14 @@
-﻿import { Paragraph as _Paragraph } from "@tiptap/extension-paragraph";
-import { mergeAttributes, Node, NodeViewProps, wrappingInputRule } from "@tiptap/core";
-import { NodeViewContent, NodeViewWrapper, ReactNodeViewRenderer } from "@tiptap/react";
+﻿import { mergeAttributes } from "@tiptap/core";
+import _Paragraph from "@tiptap/extension-paragraph";
 
 const Paragraph = _Paragraph.extend({
-    renderHTML: ({HTMLAttributes})=>["div", {...HTMLAttributes, class: "dc-p"}, 0]
+    //draggable: true,
+    parseHTML: ()=>[
+        {tag: "div.dc-p"},
+        {tag: "div"},
+        {tag: "p"}
+    ],
+    renderHTML: ({HTMLAttributes, node})=>["div", mergeAttributes(HTMLAttributes, {class: "dc-p"}), 0]
 });
-export default Paragraph;
 
-function ParagraphComp(){
-    return(<NodeViewWrapper>
-        
-    </NodeViewWrapper>);
-}
+export default Paragraph;

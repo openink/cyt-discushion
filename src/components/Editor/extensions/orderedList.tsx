@@ -2,10 +2,10 @@
 import { NodeViewContent, NodeViewWrapper, ReactNodeViewRenderer } from "@tiptap/react";
 
 const OrderedList = Node.create({
-    //避开Tiptap对ul和ol的特殊处理。eg：
-    name: "_orderedList",
+    //https://github.com/ueberdosis/tiptap/blob/b7a7b2ad85cce18449bf856fac8a8b6a301f502c/packages/core/src/inputRules/wrappingInputRule.ts#L68
+    name: "orderedlist",
     content: "paragraph block*",
-    group: "block list",
+    group: "block",
     defining: true,
     draggable: true,
     parseHTML: ()=>[
@@ -14,52 +14,135 @@ const OrderedList = Node.create({
         {tag: "dc-ol"}
     ],
     addAttributes(){return{
-        start: {
-            default: 1,
-            isRequired: false,
+        index: {
+            default: 1n,
+            isRequired: true,
             keepOnSplit: false,
-            parseHTML: element=>element.getAttribute("start")
+            parseHTML: element=>element.getAttribute("data-ol-index"),
+            renderHTML: attrs=>({"data-ol-index": attrs.type})
         },
         type: {
             default: "1",
-            isRequired: false,
+            isRequired: true,
             keepOnSplit: true,
-            parseHTML: element=>element.getAttribute("type"),
-            renderHTML: attrs=>({"type": attrs.type})
+            parseHTML: element=>element.getAttribute("data-ol-type"),
+            renderHTML: attrs=>({"data-ol-type": attrs.type})
         },
         reversed: {
             default: false,
-            isRequired: false,
+            isRequired: true,
             keepOnSplit: true,
-            parseHTML: element=>element.getAttribute("reversed"),
-            renderHTML: attrs=>({"reversed": attrs.reversed})
+            parseHTML: element=>element.getAttribute("data-ol-reversed"),
+            renderHTML: attrs=>({"data-ol-reversed": attrs.reversed})
         }
     }},
     //导出的HTML能被再次导入
-    renderHTML: ({HTMLAttributes})=>["dc-ol", mergeAttributes(HTMLAttributes)],
+    renderHTML: ({HTMLAttributes, node})=>["dc-ol", {...HTMLAttributes,
+        "data-ol-index": node.attrs.index,
+        "data-ol-type": node.attrs.type,
+        "data-ol-reversed": node.attrs.reversed
+    }, 0],
     addNodeView: ()=>ReactNodeViewRenderer(OrderedListComp),
     addInputRules(){return[
-        new InputRule({
+        wrappingInputRule({
             find: /^(\d+)\.\s$/,
-            handler(props){
-                console.log(props);
-            }
+            type: this.type,
+            getAttributes: match=>({index: match[1] + ""})
         }),
-        new InputRule({
+        wrappingInputRule({
             find: /^(i+)\.\s$/,
-            handler(props){
-                
-            }
+            type: this.type,
+            getAttributes: match=>({
+                index: BigInt(match[1].length),
+                type: "i"
+            })
+        }),
+        wrappingInputRule({
+            find: /^(I+)\.\s$/,
+            type: this.type,
+            getAttributes: match=>({
+                index: BigInt(match[1].length),
+                type: "I"
+            })
+        }),
+        wrappingInputRule({
+            find: /^(?!i+\.\s$)([a-z]+)\.\s$/,
+            type: this.type,
+            getAttributes: match=>({
+                index: fromBase26(match[1]),
+                type: "a"
+            })
+        }),
+        wrappingInputRule({
+            find: /^(?!I+\.\s$)([A-Z]+)\.\s$/,
+            type: this.type,
+            getAttributes: match=>({
+                index: fromBase26(match[1]),
+                type: "A"
+            })
+        }),
+        wrappingInputRule({
+            find: /^(\d+)\,\s$/,
+            type: this.type,
+            getAttributes: match=>({
+                index: BigInt(match[1]),
+                reversed: true
+            })
+        }),
+        wrappingInputRule({
+            find: /^(i+)\,\s$/,
+            type: this.type,
+            getAttributes: match=>({
+                index: BigInt(match[1].length),
+                type: "i",
+                reversed: true
+            })
+        }),
+        wrappingInputRule({
+            find: /^(I+)\,\s$/,
+            type: this.type,
+            getAttributes: match=>({
+                index: BigInt(match[1].length),
+                type: "I",
+                reversed: true
+            })
+        }),
+        wrappingInputRule({
+            find: /^(?!i+\,\s$)([a-z]+)\,\s$/,
+            type: this.type,
+            getAttributes: match=>({
+                index: fromBase26(match[1]),
+                type: "a",
+                reversed: true
+            })
+        }),
+        wrappingInputRule({
+            find: /^(?!I+\,\s$)([A-Z]+)\,\s$/,
+            type: this.type,
+            getAttributes: match=>({
+                index: fromBase26(match[1]),
+                type: "A",
+                reversed: true
+            })
         })
     ]}
 });
 
 export default OrderedList;
 
+function fromBase26(input :string){
+    let result = 0n, factor = 1n;
+    for(let i = 0; i < input.length; i++){
+        result += factor * BigInt(input[input.length - i - 1].toLowerCase().charCodeAt(0) - 96);
+        factor *= 26n;
+    }
+    return result;
+}
+
 function OrderedListComp(props :NodeViewProps){
     
     return(<NodeViewWrapper className="dc-ol">
-        <div className="dc-ol-marker-outer"><div className="dc-ol-marker">321</div></div>
+        <div className="dc-ol-marker-outer"><div className="dc-ol-marker">{props.node.attrs.index + ""}</div></div>
         <NodeViewContent className="dc-container-outer" />
     </NodeViewWrapper>);
 }

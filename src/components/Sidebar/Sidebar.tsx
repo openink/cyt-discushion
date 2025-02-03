@@ -8,7 +8,7 @@ import BottomMenu from "./menu/BottomMenu";
 const defaultWidth = 200;
 
 export default function Sidebar(){
-    const [width, setWidth] = useState(0);
+    const [width, setWidth] = useState(defaultWidth);
     useEffect(()=>{(async ()=>{
         const widthKV = await configTable.get("sidebarWidth");
         if(!widthKV || !widthKV.value){

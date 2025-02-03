@@ -1,0 +1,13 @@
+﻿[data-state="hidden"] > .outer{
+    display: none;
+}
+.outer{
+    display: flex;
+    flex-flow: row nowrap;
+}
+.selectButton{
+
+}
+.markButton{
+
+}

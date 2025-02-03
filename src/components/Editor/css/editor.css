@@ -1,8 +1,26 @@
-﻿.tiptap{
+﻿:root{
+    --dc-p-padding-inline: .15rem;
+    --dc-p-padding-block: .225rem;
+}
+
+.tiptap{
     box-sizing: border-box;
     width: 100%;
     padding: 3rem 4rem 40vh;
     padding: 3rem 4rem 40dvh;
+}
+
+.dc-empty .dc-p, .dc-empty.dc-p{
+    position: relative;
+}
+:is(.dc-empty .dc-p, .dc-empty.dc-p)::after{
+    content: "输入 / 发起命令...";
+    color: grey;
+    display: block;
+    position: absolute;
+    top: var(--dc-p-padding-block);
+    left: var(--dc-p-padding-inline);
+    pointer-events: none;
 }
 
 .dc-container{
@@ -20,10 +38,9 @@
 }
 
 .dc-p{
-    padding: .2rem .125rem;
+    padding: var(--dc-p-padding-block) var(--dc-p-padding-inline);
     background-color: aliceblue;
-    border-radius: .125rem;
-    position: relative;
+    border-radius: .15rem;
 }
 
 .dc-ul{

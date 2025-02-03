@@ -1,9 +1,9 @@
 ﻿import { Extension } from "@tiptap/react";
 
 const BlockID = Extension.create({
+    name: "blockID",
     addGlobalAttributes(){return[{
-        //不能再嵌套块级元素的元素才需要block-id
-        types: ["paragraph", "heading", "horizontalRule", "image", "taskItem"],
+        types: ["paragraph", "blockquote", "heading", "bulletlist", "image", "taskItem"],
         attributes: {
             id: {
                 default: null,

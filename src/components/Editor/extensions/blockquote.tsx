@@ -12,10 +12,10 @@ const Blockquote = Node.create({
         {tag: "dc-bq"}
     ],
     //导出的HTML能被再次导入
-    renderHTML: ({HTMLAttributes})=>["dc-bq", mergeAttributes(HTMLAttributes)],
+    renderHTML: ({HTMLAttributes})=>["dc-bq", HTMLAttributes, 0],
     addNodeView: ()=>ReactNodeViewRenderer(BlockquoteComp),
     addInputRules(){return[wrappingInputRule({
-        find: /^-\s$/,
+        find: /^>\s$/,
         type: this.type
     })]}
 });

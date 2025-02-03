@@ -2,9 +2,11 @@
 import { NodeViewContent, NodeViewWrapper, ReactNodeViewRenderer } from "@tiptap/react";
 
 const BulletList = Node.create({
-    name: "_bulletList",
+    //为了避开Tiptap对ul和ol的特殊处理，不写 `bulletList`。
+    //https://github.com/ueberdosis/tiptap/blob/b7a7b2ad85cce18449bf856fac8a8b6a301f502c/packages/core/src/inputRules/wrappingInputRule.ts#L68
+    name: "bulletlist",
     content: "paragraph block*",
-    group: "block list",
+    group: "block",
     defining: true,
     draggable: true,
     parseHTML: ()=>[
@@ -13,7 +15,7 @@ const BulletList = Node.create({
         {tag: "dc-ul"}
     ],
     //导出的HTML能被再次导入
-    renderHTML: ({HTMLAttributes})=>["dc-ul", mergeAttributes(HTMLAttributes)],
+    renderHTML: ({HTMLAttributes})=>["dc-ul", HTMLAttributes, 0],
     addNodeView: ()=>ReactNodeViewRenderer(BulletListComp),
     addInputRules(){return[wrappingInputRule({
         find: /^-\s$/,

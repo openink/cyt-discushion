@@ -1,6 +1,7 @@
 ﻿import { Extension } from "@tiptap/react";
 
 const BgColor = Extension.create({
+    name: "bgColor",
     addGlobalAttributes(){return[{
         types: ["paragraph", "blockquote", ""],
         attributes: {
