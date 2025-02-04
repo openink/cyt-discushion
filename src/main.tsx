@@ -5,9 +5,6 @@ import "./css/main.body.css";
 import "./css/main.basicElements.css";
 import "./css/main.varibles.css";
 import App from "./components/App/App.tsx";
-import { mountGetPx } from "./utils/css.ts";
-
-mountGetPx();
 
 const root = createRoot(document.getElementById("root")!);
 

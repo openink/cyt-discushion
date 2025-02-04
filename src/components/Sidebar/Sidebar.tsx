@@ -1,22 +1,41 @@
 ﻿import { useEffect, useState } from "react";
 import styles from "./Sidebar.module.css";
-import { configTable } from "../../data/db";
+import "./resize.css";
 import DocumentList from "./DocumentList";
 import TopMenu from "./menu/TopMenu";
 import BottomMenu from "./menu/BottomMenu";
+import Resizer from "./Resizer";
+import { configTable } from "../../data/db";
+import { Table } from "dexie";
+import { DcConfigEntry } from "../../data/config";
+import { getPx } from "../../utils/css";
 
-const defaultWidth = 200;
+export const defaultSidebarWidth = 200;
 
+/**@once*/
 export default function Sidebar(){
-    const [width, setWidth] = useState(defaultWidth);
+    const
+    [width, setWidth] = useState(defaultSidebarWidth);
     useEffect(()=>{(async ()=>{
-        const widthKV = await configTable.get("sidebarWidth");
+        const
+        widthKV = await (configTable as Table<DcConfigEntry<"sidebarWidth">, "sidebarWidth">).get("sidebarWidth"),
+        _50vw = getPx("50vw"),
+        _5rem = getPx("5rem");
+        let width :number = 0;
         if(!widthKV || !widthKV.value){
-            configTable.add({key: "sidebarWidth", value: defaultWidth});
-            setWidth(defaultWidth);
+            configTable.add({key: "sidebarWidth", value: defaultSidebarWidth});
+            width = defaultSidebarWidth;
         }
-        //fixme:更合理的类型推断
-        else setWidth(widthKV.value as number);
+        else width = widthKV.value;
+        if(width > _50vw){
+            configTable.put({key: "sidebarWidth", value: _50vw});
+            width = _50vw;
+        }
+        if(width < _5rem){
+            configTable.put({key: "sidebarWidth", value: _5rem});
+            width = _5rem;
+        }
+        setWidth(width);
     })()}, []);
     return(<div className={styles.outer} style={{width}}>
         <div className={styles.inner}>
@@ -24,6 +43,6 @@ export default function Sidebar(){
             <DocumentList />
             <BottomMenu />
         </div>
-        <div className={styles.resizerOuter}><div className={styles.resizer} /></div>
+        <Resizer setWidth={setWidth} />
     </div>);
 }

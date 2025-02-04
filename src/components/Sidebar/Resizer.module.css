@@ -1,0 +1,21 @@
+﻿.resizerOuter{
+    position: relative;
+}
+.resizer{
+    --actualWidth: .125rem;
+    --totalWidth: .6rem;
+    position: absolute;
+    top: 0;
+    right: calc(calc(0px - var(--totalWidth)) / 2);
+    height: 100%;
+    width: var(--actualWidth);
+    padding: 0 calc(calc(var(--totalWidth) - var(--actualWidth)) / 2);
+    cursor: col-resize;
+}
+.resizerInner{
+    width: 100%;
+    height: 100%;
+    .resizer:hover &{
+        background-color: var(--c-grey-4);
+    }
+}

@@ -47,7 +47,7 @@ const lowlight = createLowlight(all);
 export default function Editor(){
     const editor = useEditor({
         extensions: [
-            //技术性元素
+            //技术性扩展
             History, BlockID, NoUndoSetIniContent,
             Dropcursor.configure({
                 class: "dc-dropcursor",
@@ -59,19 +59,16 @@ export default function Editor(){
                 emptyNodeClass: "dc-empty",
                 placeholder: ""
             }),
-            //块级元素
+            //块级节点
             Document, Paragraph, Blockquote, BulletList, OrderedList, Heading.configure({levels: [1, 2, 3, 4]}),
-            //行内元素
+            //行内节点
             Text, HardBreak,
-            //标记元素
+            //标记节点
             Bold, Italic, Underline, Strike, Code, Link, Highlight, Superscript, Subscript,
-            //
+            //未处理
             CodeBlockLowlight.configure({lowlight}),
             HorizontalRule,
             Image,
-            //TaskItem,
-            //TaskList,
-            
             //这是一个基底扩展，用来做文字颜色
             TextStyle,
         ],
@@ -84,8 +81,7 @@ export default function Editor(){
         const
         currentDocumentA = await configTable.get("currentDocument"),
         iniContent = await getDocument(currentDocumentA ? currentDocumentA.value as UUID | null : currentDocumentA);
-        console.log(iniContent);
-        editor!.commands.setContent(iniContent, false);
+        editor!.commands.setIniContent(iniContent);
     })()}, []);
     return(<>
         <EditorContent editor={editor} className={`${styles.outer} dc-container-outer`} />
