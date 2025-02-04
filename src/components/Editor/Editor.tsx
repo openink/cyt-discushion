@@ -75,6 +75,7 @@ export default function Editor(){
         injectCSS: false,
         onUpdate(props){
             console.log(props);
+            
         }
     });
     useEffect(()=>{(async ()=>{
