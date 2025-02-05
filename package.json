@@ -10,6 +10,7 @@
         "preview": "vite preview"
     },
     "dependencies": {
+        "@floating-ui/react": "^0.27.3",
         "@tiptap/extension-blockquote": "^2.11.3",
         "@tiptap/extension-bold": "^2.11.3",
         "@tiptap/extension-bubble-menu": "^2.11.3",
@@ -45,6 +46,7 @@
         "dexie": "^4.0.11",
         "dexie-react-hooks": "^1.1.7",
         "lowlight": "^3.3.0",
+        "motion": "^12.0.11",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "uuid": "^11.0.5"

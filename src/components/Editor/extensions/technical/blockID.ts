@@ -3,7 +3,7 @@
 const BlockID = Extension.create({
     name: "blockID",
     addGlobalAttributes(){return[{
-        types: ["paragraph", "blockquote", "heading", "bulletlist", "image", "taskItem"],
+        types: ["paragraph", "blockquote", "heading", "bulletlist", "image"],
         attributes: {
             id: {
                 default: null,

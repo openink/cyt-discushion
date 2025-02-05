@@ -16,26 +16,29 @@ import Image from "@tiptap/extension-image";
 import TextStyle from "@tiptap/extension-text-style";
 
 import History from "@tiptap/extension-history";
-import BlockID from "./extensions/blockID";
-import NoUndoSetIniContent from "./extensions/noUndoSetIniContent";
+import BlockID from "./extensions/technical/blockID";
+import NoUndoSetIniContent from "./extensions/technical/noUndoSetIniContent";
+import ClearStoredMarks from "./extensions/technical/clearStoredMarks";
 import Dropcursor from "@tiptap/extension-dropcursor";
 import Placeholder from "@tiptap/extension-placeholder";
 
 import Document from "@tiptap/extension-document";
-import Paragraph from "./extensions/paragraph";
-import Blockquote from "./extensions/blockquote";
-import BulletList from "./extensions/bulletList";
-import OrderedList from "./extensions/orderedList";
+import Paragraph from "./extensions/block/paragraph";
+import Blockquote from "./extensions/block/blockquote";
+import BulletList from "./extensions/block/bulletList";
+import OrderedList from "./extensions/block/orderedList";
 import Heading from "@tiptap/extension-heading";
 
 import Text from "@tiptap/extension-text";
 import HardBreak from "@tiptap/extension-hard-break";
 
-import Bold from "@tiptap/extension-bold";
-import Italic from "@tiptap/extension-italic";
-import Underline from "@tiptap/extension-underline";
-import Strike from "@tiptap/extension-strike";
-import Code from "@tiptap/extension-code";
+//import { Bold } from "@tiptap/extension-bold";
+//import { Italic } from "@tiptap/extension-italic";
+import Bold from "./extensions/mark/bold";
+import Italic from "./extensions/mark/italic";
+import Underline from "./extensions/mark/underline";
+import Strike from "./extensions/mark/strike";
+import Code from "./extensions/mark/code";
 import { all, createLowlight } from "lowlight";
 import Link from "@tiptap/extension-link";
 import Highlight from "@tiptap/extension-highlight";
@@ -48,7 +51,7 @@ export default function Editor(){
     const editor = useEditor({
         extensions: [
             //技术性扩展
-            History, BlockID, NoUndoSetIniContent,
+            History, BlockID, NoUndoSetIniContent, ClearStoredMarks,
             Dropcursor.configure({
                 class: "dc-dropcursor",
                 color: "red",
@@ -64,8 +67,9 @@ export default function Editor(){
             //行内节点
             Text, HardBreak,
             //标记节点
-            Bold, Italic, Underline, Strike, Code, Link, Highlight, Superscript, Subscript,
+            Bold, Italic, Underline, Strike, Code,
             //未处理
+            Link, Highlight, Superscript, Subscript,
             CodeBlockLowlight.configure({lowlight}),
             HorizontalRule,
             Image,
@@ -75,7 +79,6 @@ export default function Editor(){
         injectCSS: false,
         onUpdate(props){
             console.log(props);
-            
         }
     });
     useEffect(()=>{(async ()=>{
