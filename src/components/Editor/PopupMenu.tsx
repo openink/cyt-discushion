@@ -16,7 +16,7 @@ export default function PopupMenu(props :Props){
         {editor.state.selection.$anchor.parent === editor.state.selection.$head.parent ? <BlockTypeSelecter editor={editor} /> : null}
         <button
             className={`${styles.markButton}${editor.isActive("bold") ? ` ${styles.active}` : ""}`}
-            onClick={()=>{console.log("6");editor.chain().focus().toggleBold().run()}}
+            onClick={()=>{editor.chain().focus().toggleBold().run()}}
             disabled={!editor.can().toggleBold()}
             style={{fontWeight: "bold"}}
         ><b>B</b></button>
