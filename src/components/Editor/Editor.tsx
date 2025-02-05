@@ -18,7 +18,7 @@ import TextStyle from "@tiptap/extension-text-style";
 import History from "@tiptap/extension-history";
 import BlockID from "./extensions/technical/blockID";
 import NoUndoSetIniContent from "./extensions/technical/noUndoSetIniContent";
-import ClearStoredMarks from "./extensions/technical/clearStoredMarks";
+import ClearMarks from "./extensions/technical/clearMarks";
 import Dropcursor from "@tiptap/extension-dropcursor";
 import Placeholder from "@tiptap/extension-placeholder";
 
@@ -51,7 +51,7 @@ export default function Editor(){
     const editor = useEditor({
         extensions: [
             //技术性扩展
-            History, BlockID, NoUndoSetIniContent, ClearStoredMarks,
+            History, BlockID, NoUndoSetIniContent, ClearMarks,
             Dropcursor.configure({
                 class: "dc-dropcursor",
                 color: "red",
