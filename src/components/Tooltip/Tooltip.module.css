@@ -1,0 +1,7 @@
+﻿.tooltip{
+    background-color: var(--c-grey-8);
+    color: var(--c-grey--2);
+    border-radius: .3rem;
+    padding: .3rem;
+    font-size: .75rem;
+}

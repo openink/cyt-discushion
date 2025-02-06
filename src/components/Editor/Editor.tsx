@@ -44,6 +44,7 @@ import Link from "@tiptap/extension-link";
 import Highlight from "@tiptap/extension-highlight";
 import Superscript from "@tiptap/extension-superscript";
 import Subscript from "@tiptap/extension-subscript";
+import BubbleMenu from "@tiptap/extension-bubble-menu";
 
 const lowlight = createLowlight(all);
 
@@ -52,6 +53,13 @@ export default function Editor(){
         extensions: [
             //技术性扩展
             History, BlockID, NoUndoSetIniContent, ClearMarks,
+            BubbleMenu.configure({
+                updateDelay: 250,
+                tippyOptions: {
+                    duration: 100,
+                    interactive: true
+                }
+            }),
             Dropcursor.configure({
                 class: "dc-dropcursor",
                 color: "red",
@@ -67,9 +75,13 @@ export default function Editor(){
             //行内节点
             Text, HardBreak,
             //标记节点
-            Bold, Italic, Underline, Strike, Code,
+            Bold, Italic, Underline, Strike, Code, Link.configure({
+                protocols: ["http", "https", "mailto", "ftp"],
+                openOnClick: true,
+                linkOnPaste: false
+            }),
             //未处理
-            Link, Highlight, Superscript, Subscript,
+            Highlight, Superscript, Subscript,
             CodeBlockLowlight.configure({lowlight}),
             HorizontalRule,
             Image,

@@ -3,6 +3,7 @@
 }
 .outer{
     --outerHeight: 2.3rem;
+    --margin-tb: .15rem;
     display: flex;
     flex-flow: row nowrap;
     border-radius: .6rem;
@@ -12,35 +13,51 @@
     padding: 0 .1rem;
 }
 .selectButton{
+    border-radius: .5rem;
     background-color: transparent;
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
-    margin: .2rem .1rem;
-    padding: .25rem .35rem .25rem .25rem;
-    border-radius: .4rem;
+    margin: var(--margin-tb) .05rem;
+    padding: .4rem .4rem .4rem .25rem;
 }
-.selectButton:hover{
-    background-color: var(--c-grey-10);
+.selectButton svg{
+    height: 100%;
 }
 .markButton{
-    --margin-tb: .15rem;
+    border-radius: .5rem;
     font-size: 1.05rem;
-    border-radius: .4rem;
     background-color: transparent;
     box-sizing: border-box;
-    padding: .25rem;
+    padding: .4rem;
     margin: var(--margin-tb) .05rem;
     width: calc(var(--outerHeight) - calc(var(--margin-tb) * 2));
     height: calc(var(--outerHeight) - calc(var(--margin-tb) * 2));
 }
-.markButton:disabled{
+:is(.selectButton, .markButton):disabled{
     cursor: auto;
     pointer-events: none;
 }
-.markButton:not(:disabled):hover{
+:is(.selectButton, .markButton):not(:disabled):hover{
+    transition: background-color .05s ease;
     background-color: var(--c-grey-10);
 }
+:is(.selectButton, .markButton):not(:disabled):active{
+    transition: background-color .01s ease;
+    background-color: var(--c-grey-8);
+}
 .active{
-    color: blue;
+    color: #569dff;
+}
+.separatorOuter{
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    width: .1rem;
+    padding: 0 .05rem;
+    height: 100%;
+}
+.separator{
+    height: 75%;
+    background-color: var(--c-grey-9);
 }

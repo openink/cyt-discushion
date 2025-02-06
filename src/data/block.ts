@@ -1,7 +1,6 @@
 ﻿import { JSONContent } from "@tiptap/react";
 import { blockTable, configTable } from "./db";
 import { v4 } from "uuid";
-import { DcConfigEntry } from "./config";
 
 export async function getDocument(docId :UUID | null | undefined) :Promise<JSONContent>{
     //fixme:按理说 type !== "doc" 不应该自动新建文档。
