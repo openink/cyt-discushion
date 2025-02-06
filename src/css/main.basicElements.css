@@ -99,6 +99,17 @@ code{
     border-radius: .3em;
     background-color: var(--c-grey-9);
 }
+pre{
+    margin: .5rem 0;
+}
+pre code{
+    box-sizing: border-box;
+    padding: 1.255rem;
+    border-radius: .4rem;
+    margin: 0;
+    display: block;
+    width: 100%;
+}
 em, i{
     font-style: italic;
 }

@@ -76,9 +76,11 @@ export default function Editor(){
             Text, HardBreak,
             //标记节点
             Bold, Italic, Underline, Strike, Code, Link.configure({
+                //这个之后肯定要改/自己从头写，里面太多不能配置的东西了
                 protocols: ["http", "https", "mailto", "ftp"],
                 openOnClick: true,
-                linkOnPaste: false
+                linkOnPaste: false,
+                autolink: false
             }),
             //未处理
             Highlight, Superscript, Subscript,
