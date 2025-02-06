@@ -18,7 +18,7 @@ const OrderedList = Node.create({
             default: 1n,
             isRequired: true,
             keepOnSplit: false,
-            parseHTML: element=>element.getAttribute("data-ol-index"),
+            parseHTML: element=>BigInt(element.getAttribute("data-ol-index") ?? 1),
             renderHTML: attrs=>({"data-ol-index": attrs.type})
         },
         type: {
@@ -140,8 +140,12 @@ function fromBase26(input :string){
 }
 
 function OrderedListComp(props :NodeViewProps){
-    
-    return(<NodeViewWrapper className="dc-ol">
+    const {node} = props, localAttrs = {
+        "data-ol-index": node.attrs.index,
+        "data-ol-type": node.attrs.type,
+        "data-ol-reversed": node.attrs.reversed
+    };
+    return(<NodeViewWrapper className="dc-ol" {...localAttrs}>
         <div className="dc-ol-marker-outer"><div className="dc-ol-marker">{props.node.attrs.index + ""}</div></div>
         <NodeViewContent className="dc-container-outer" />
     </NodeViewWrapper>);
