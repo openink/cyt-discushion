@@ -2,7 +2,7 @@
 
 declare module "@tiptap/core"{
     interface Commands<ReturnType>{
-        formulaInline: {
+        formulaInline :{
             setFormulaInline: ()=>ReturnType;
             unsetFormulaInline: ()=>ReturnType;
         }

@@ -4,7 +4,7 @@ import { NodeViewContent, NodeViewWrapper, ReactNodeViewRenderer } from "@tiptap
 const Blockquote = Node.create({
     name: "blockquote",
     content: "paragraph block*",
-    group: "block",
+    group: "block groupable",
     draggable: true,
     parseHTML: ()=>[
         {tag: "div.dc-bq"},

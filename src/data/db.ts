@@ -1,6 +1,6 @@
 ﻿import Dexie, { EntityTable } from "dexie";
 import { BlockJSON, BlockTypes, UUID } from "./block";
-import { DcConfigs, DcConfigEntry, DcConfigTypes } from "./config";
+import { DcConfigEntry, DcConfigTypes } from "./config";
 
 export const db = new Dexie("discushion") as Dexie & {
     blocks :EntityTable<BlockJSON<BlockTypes>, "id">,
@@ -8,7 +8,8 @@ export const db = new Dexie("discushion") as Dexie & {
 };
 
 db.version(1).stores({
-    blocks: "id, type, *children, *parents",
+    blocks: "id, type, *children",
+    //blocks: "id, type, *children, *parents",
     configs: "key"
 });
 

@@ -2,8 +2,7 @@
 import styles from "./PopupMenu.module.css";
 import gStyles from "../../css/main.module.css";
 import { BubbleMenu, Editor } from "@tiptap/react";
-import { autoUpdate, flip, offset, shift, useFloating, useFocus, useHover, useInteractions } from "@floating-ui/react";
-import { forwardRef, useCallback, useState } from "react";
+import { useCallback } from "react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../Tooltip/Tooltip";
 
 interface EditorProps{

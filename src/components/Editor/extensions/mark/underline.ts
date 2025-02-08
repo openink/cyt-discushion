@@ -3,7 +3,7 @@ import { Mark, markInputRule, markPasteRule } from "@tiptap/core";
 
 declare module "@tiptap/core"{
     interface Commands<ReturnType>{
-        underline: {
+        underline :{
             setUnderline: ()=>ReturnType;
             toggleUnderline: ()=>ReturnType;
             unsetUnderline: ()=>ReturnType;

@@ -8,7 +8,7 @@ const Paragraph = _Paragraph.extend({
         {tag: "div"},
         {tag: "p"}
     ],
-    renderHTML: ({HTMLAttributes, node})=>["div", mergeAttributes(HTMLAttributes, {class: "dc-p"}), 0]
+    renderHTML: ({HTMLAttributes})=>["div", mergeAttributes(HTMLAttributes, {class: "dc-p"}), 0]
 });
 
 export default Paragraph;

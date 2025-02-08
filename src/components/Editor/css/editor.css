@@ -1,11 +1,13 @@
 ﻿:root{
-    --dc-p-padding-inline: .15rem;
-    --dc-p-padding-block: .225rem;
+    --dc-p-padding-block: .28125rem;
+    --dc-p-padding-inline: .1875rem;
 }
 
 .tiptap{
     box-sizing: border-box;
     width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
     padding: 3rem 4rem 40vh;
     padding: 3rem 4rem 40dvh;
 }
@@ -40,7 +42,7 @@
 .dc-p{
     padding: var(--dc-p-padding-block) var(--dc-p-padding-inline);
     background-color: aliceblue;
-    border-radius: .15rem;
+    border-radius: .1875rem;
 }
 
 .dc-ul{

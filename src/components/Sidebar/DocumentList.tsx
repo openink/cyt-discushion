@@ -1,23 +1,17 @@
-﻿import { useEffect, useState } from "react";
-import styles from "./DocumentList.module.css";
+﻿import styles from "./DocumentList.module.css";
 import { blockTable } from "../../data/db";
-import { BlockJSON, BlockPJSON, InlineTJSON, InlineTTypes } from "../../data/block";
+import { useLiveQuery } from "dexie-react-hooks";
+import { BlockPJSON, InlineTJSON, InlineTTypes } from "../../data/block";
 
-//fixme:你不觉得这里全是ts黑魔法吗？
 export default function DocumentList(){
-    const [documents, setDocuments] = useState<BlockJSON<"doc">[]>([]);
-    useEffect(()=>{(async ()=>{
-        const res = await blockTable.where("type").equals("doc").toArray();
-        setDocuments(res as BlockJSON<"doc">[]);
-    })()}, []);
+    const documents = useLiveQuery(async ()=>await blockTable.where("type").equals("doc").toArray(), []) as BlockPJSON<"doc">[] | undefined;
     return(<div className={styles.container}>
-        {documents.map(document=><Document key={document.id} data={document} />)}
+        {documents ? documents.map(document=><Document key={document.id} data={document} />) : null}
     </div>);
 }
 
-function Document(props :{data :BlockPJSON<"doc">}){
-    const {data} = props;
+function Document({data} :{data :BlockPJSON<"doc">}){
     return(<div className={styles.entry}>
-        {data.p.content.map(inline=>(inline as InlineTJSON<InlineTTypes>).text ?? "").join()}
+        {data.p.content.map(inline=>(inline as InlineTJSON<InlineTTypes>).text ?? "").join("")}
     </div>);
 }

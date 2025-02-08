@@ -1,9 +1,9 @@
-﻿import { Extension, getMarkRange } from "@tiptap/core";
+﻿import { Extension } from "@tiptap/core";
 import { MarkType } from "@tiptap/pm/model";
 
 declare module "@tiptap/core"{
     interface Commands<ReturnType>{
-        clearMarks: {
+        clearMarks :{
             clearMarks: ()=>ReturnType;
         }
     }
