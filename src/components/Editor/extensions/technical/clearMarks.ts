@@ -23,7 +23,7 @@ const ClearMarks = Extension.create({
                 if(empty) tr.removeStoredMark(marks[markName]);
                 //如果是区间选择，则会清除格式
                 else tr.removeMark(ranges[i].$from.pos, ranges[i].$to.pos, marks[markName]);
-                console.log("cleared", markName);
+                //console.log("cleared", markName);
             }
             return true;
         }

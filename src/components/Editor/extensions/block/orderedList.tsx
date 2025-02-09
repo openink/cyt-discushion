@@ -5,7 +5,7 @@ const OrderedList = Node.create({
     //https://github.com/ueberdosis/tiptap/blob/b7a7b2ad85cce18449bf856fac8a8b6a301f502c/packages/core/src/inputRules/wrappingInputRule.ts#L68
     name: "orderedlist",
     content: "paragraph block*",
-    group: "block dclist groupable",
+    group: "block dclist container",
     defining: true,
     draggable: true,
     parseHTML: ()=>[

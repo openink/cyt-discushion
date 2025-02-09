@@ -42,9 +42,10 @@ import Highlight from "@tiptap/extension-highlight";
 import Superscript from "@tiptap/extension-superscript";
 import Subscript from "@tiptap/extension-subscript";
 import BubbleMenu from "@tiptap/extension-bubble-menu";
-import AppendParagraph from "./extensions/technical/appendParagraph";
-import NoSelectTB from "./extensions/technical/noSelectTB";
+import TrailingP from "./extensions/technical/trailingP";
+import PmtbFix from "./extensions/technical/pmtbFix";
 import Garagraph from "./extensions/block/garagraph";
+import { DOMSerializer } from "@tiptap/pm/model";
 
 type Props = {
     documentId :UUID;
@@ -62,7 +63,7 @@ export default function Editor({documentId, debug} :Props){
     editor = useEditor({
         extensions: [
             //技术性扩展
-            History, BlockID, NoUndoSetIniContent, ClearMarks, AppendParagraph, NoSelectTB,
+            History, BlockID, NoUndoSetIniContent, ClearMarks, TrailingP, PmtbFix,
             BubbleMenu.configure({
                 updateDelay: 250,
                 tippyOptions: {
@@ -102,6 +103,19 @@ export default function Editor({documentId, debug} :Props){
             //这是一个基底扩展，用来做文字颜色
             TextStyle,
         ],
+        editorProps: {handleDOMEvents: {copy(view, event){
+            //todo:
+            const { state } = view, { selection } = state, fragment = document.createDocumentFragment(), div = document.createElement("div");
+            DOMSerializer.fromSchema(state.schema).serializeFragment(selection.content().content, { document }, fragment);
+            div.appendChild(fragment);
+            div.querySelectorAll("div").forEach(node=>{
+                if(node.textContent?.trim() === "") node.remove();
+            });
+            const textContent = div.textContent ?? "";
+            event.clipboardData?.setData("text/plain", textContent);
+            event.clipboardData?.setData("text/html", div.innerHTML);
+            event.preventDefault();
+        }}},
         injectCSS: false,
         //这里仅供debug使用
         //其他逻辑请使用插件添加
@@ -114,15 +128,27 @@ export default function Editor({documentId, debug} :Props){
             debug.setDocSize(props.editor.state.doc.content.size);
         }
     }),
+    //自动新增末尾段落（trailing paragraph）
     editorOuter = useRef<HTMLDivElement>(null),
     clickCB = useCallback((event :React.MouseEvent<HTMLDivElement>)=>{
-        //console.log(editor!.state.selection.$anchor);
+        const {state, commands} = editor!, anchor = state.selection.$anchor, {parent} = anchor;
+        console.log(editor);
         if(
+            //点击发生在最外层包装div，不是在节点里
             event.target === editorOuter.current?.childNodes[0]
-         && editor!.state.selection.$anchor.parent.content.size !== 0
-         && editor!.state.selection.empty
-        ) editor!.commands.appendParagraph();
+            //选区为空
+         && state.selection.empty
+            //选区所在区块是最后一个区块。由于进入/离开doc不算1单位，所以多算了这部分，要减去1单位
+         && parent.nodeSize + anchor.start(anchor.depth) - 1 === state.doc.content.size
+            //选区所在区块不为空
+         && parent.content.size !== 0
+        ){
+            //防止用户撤销这一步，让光标跑回到上一区块的（浏览器计算出来的位置）中间
+            commands.setSelectionToEnd();
+            commands.appendParagraph();
+        }
     }, []);
+    //获取初始内容（防止了用户撤销回到全空文档）
     useEffect(()=>{(async ()=>{
         const iniContent = await getDocument(documentId);
         //console.log(iniContent);

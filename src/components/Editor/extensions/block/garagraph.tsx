@@ -11,7 +11,7 @@ declare module "@tiptap/core"{
 const Garagraph = Node.create({
     name: "garagraph",
     content: "paragraph block*",
-    group: "block groupable",
+    group: "block container",
     draggable: true,
     parseHTML: ()=>[
         {tag: "div.dc-gp"},
