@@ -8,8 +8,7 @@ export const db = new Dexie("discushion") as Dexie & {
 };
 
 db.version(1).stores({
-    blocks: "id, type, *children",
-    //blocks: "id, type, *children, *parents",
+    blocks: "id, type, deleted, *children",
     configs: "key"
 });
 

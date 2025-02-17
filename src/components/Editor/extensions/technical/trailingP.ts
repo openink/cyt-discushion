@@ -22,7 +22,6 @@ const TrailingP = Extension.create({
         setSelectionToEnd: ()=>({dispatch, tr, state})=>{
             if(!dispatch) return true;
             tr.setSelection(Selection.atEnd(state.doc));
-            tr.setMeta("addToHistory", false);
             return true;
         }
     }}

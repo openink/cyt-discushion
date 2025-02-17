@@ -1,7 +1,6 @@
 ﻿import { JSONContent } from "@tiptap/react";
 import { blockTable, configTable } from "./db";
 import { v4 } from "uuid";
-import { Fragment } from "@tiptap/pm/model";
 
 export async function getDocument(docId :UUID | null | undefined) :Promise<JSONContent | null>{
     //type !== "doc" 不应该自动新建文档。目前是直接返回空值
@@ -72,7 +71,7 @@ export async function newDocument(){
     console.log(`Creating new document ${docId} ${pId}`);
     await blockTable.bulkAdd([
         {
-            id: docId, /*parents: [],*/ children: [pId], attrs: {},
+            id: docId, /*parents: [],*/ children: [pId], attrs: {}, deleted: false,
             type: "doc", p: {
                 attrs: {}, content: [{
                     type: "text",
@@ -119,9 +118,9 @@ export type BlockTypes = BlockPTypes | BlockNPTypes | "paragraph";
 
 export interface BlockNPJSON<T extends BlockNPTypes>{
     id :UUID;
+    deleted :boolean;
     type :T;
     children :UUID[];
-    //parents :UUID[];
     attrs :StringAttributeRecord;
 }
 
@@ -132,9 +131,9 @@ export interface BlockNPJSON<T extends BlockNPTypes>{
 //后期某些区块（column）可能没有这个，所以这个从基类型搬到这里了
 export interface BlockPJSON<T extends BlockPTypes>{
     id :UUID;
+    deleted :boolean;
     type :T;
     children :UUID[];
-    //parents :UUID[];
     attrs :StringAttributeRecord;
     p :{
         //这个纯属多余
@@ -144,6 +143,7 @@ export interface BlockPJSON<T extends BlockPTypes>{
     };
 }
 
+//现在 `paragraph` 是唯一可以容纳行内节点的东西了
 export interface ParagraphJSON{
     id :UUID;
     type :"paragraph";
@@ -172,7 +172,7 @@ export function toFormattedInline(content :JSONContent[]) :InlineJSON<InlineType
         }
         //肯定是InlineNTTypes，目前没有这部分的节点，先不做
         else{
-
+            
         }
     }
     return result;

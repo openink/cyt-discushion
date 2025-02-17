@@ -18,6 +18,9 @@ import History from "@tiptap/extension-history";
 import BlockID from "./extensions/technical/blockID";
 import NoUndoSetIniContent from "./extensions/technical/noUndoSetIniContent";
 import ClearMarks from "./extensions/technical/clearMarks";
+import TrailingP from "./extensions/technical/trailingP";
+import PmtbFix from "./extensions/technical/pmtbFix";
+import Copy from "./extensions/technical/copy";
 import Dropcursor from "@tiptap/extension-dropcursor";
 import Placeholder from "@tiptap/extension-placeholder";
 
@@ -42,10 +45,7 @@ import Highlight from "@tiptap/extension-highlight";
 import Superscript from "@tiptap/extension-superscript";
 import Subscript from "@tiptap/extension-subscript";
 import BubbleMenu from "@tiptap/extension-bubble-menu";
-import TrailingP from "./extensions/technical/trailingP";
-import PmtbFix from "./extensions/technical/pmtbFix";
 import Garagraph from "./extensions/block/garagraph";
-import { DOMSerializer } from "@tiptap/pm/model";
 
 type Props = {
     documentId :UUID;
@@ -63,7 +63,7 @@ export default function Editor({documentId, debug} :Props){
     editor = useEditor({
         extensions: [
             //技术性扩展
-            History, BlockID, NoUndoSetIniContent, ClearMarks, TrailingP, PmtbFix,
+            History, BlockID, NoUndoSetIniContent, ClearMarks, TrailingP, PmtbFix, Copy,
             BubbleMenu.configure({
                 updateDelay: 250,
                 tippyOptions: {
@@ -73,7 +73,7 @@ export default function Editor({documentId, debug} :Props){
             }),
             Dropcursor.configure({
                 class: "dc-dropcursor",
-                color: "red",
+                color: "var(--c-drop-cursor)",
                 width: 2
             }),
             Placeholder.configure({
@@ -103,19 +103,6 @@ export default function Editor({documentId, debug} :Props){
             //这是一个基底扩展，用来做文字颜色
             TextStyle,
         ],
-        editorProps: {handleDOMEvents: {copy(view, event){
-            //todo:
-            const { state } = view, { selection } = state, fragment = document.createDocumentFragment(), div = document.createElement("div");
-            DOMSerializer.fromSchema(state.schema).serializeFragment(selection.content().content, { document }, fragment);
-            div.appendChild(fragment);
-            div.querySelectorAll("div").forEach(node=>{
-                if(node.textContent?.trim() === "") node.remove();
-            });
-            const textContent = div.textContent ?? "";
-            event.clipboardData?.setData("text/plain", textContent);
-            event.clipboardData?.setData("text/html", div.innerHTML);
-            event.preventDefault();
-        }}},
         injectCSS: false,
         //这里仅供debug使用
         //其他逻辑请使用插件添加
@@ -132,7 +119,6 @@ export default function Editor({documentId, debug} :Props){
     editorOuter = useRef<HTMLDivElement>(null),
     clickCB = useCallback((event :React.MouseEvent<HTMLDivElement>)=>{
         const {state, commands} = editor!, anchor = state.selection.$anchor, {parent} = anchor;
-        console.log(editor);
         if(
             //点击发生在最外层包装div，不是在节点里
             event.target === editorOuter.current?.childNodes[0]
