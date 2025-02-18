@@ -55,7 +55,8 @@ export function Tooltip({children, ...options} :{children :React.ReactNode} & To
     </TooltipContext.Provider>);
 }
 
-export const TooltipTrigger = forwardRef<HTMLElement, React.HTMLProps<HTMLElement> & {asChild?: boolean}>(({children, asChild = false, ...props}, propRef)=>{
+//`As` 只放div是为了防止太多类型导致ts类型引擎爆炸，可按需添加原生元素
+export const TooltipTrigger = forwardRef<HTMLElement, React.HTMLProps<HTMLElement> & {asChild?: boolean; As? :"div"}>(({children, asChild = false, As, ...props}, propRef)=>{
     const
     context = useTooltipContext(),
     childrenRef = (children as any).ref,
@@ -68,8 +69,13 @@ export const TooltipTrigger = forwardRef<HTMLElement, React.HTMLProps<HTMLElemen
             ...children.props,
             "data-state": context.open ? "open" : "closed"
         })
-    );
-    return(<button
+    )
+    if(As) return(<As
+        ref={ref}
+        data-state={context.open ? "open" : "closed"}
+        {...context.getReferenceProps(props)}
+    >{children}</As>);
+    else return(<button
         ref={ref}
         data-state={context.open ? "open" : "closed"}
         {...context.getReferenceProps(props)}

@@ -28,7 +28,7 @@ export async function getDocument(docId :UUID | null | undefined) :Promise<JSONC
                 content: data.p.content,
                 attrs: {...data.p.attrs, id: "=parent"}
             }];
-            if(data.children.length) for(let i = 0; i < data.children.length; i++) if(!breadcrumb.includes(data.children[i]) && map.has(data.children[i])){
+            if("children" in data && data.children.length) for(let i = 0; i < data.children.length; i++) if(!breadcrumb.includes(data.children[i]) && map.has(data.children[i])){
                 if(!("content" in result)) result.content = [mergeDataR(data.children[i])];
                 else result.content!.push(mergeDataR(data.children[i]));
             }
@@ -111,10 +111,17 @@ export function omitBlockIDFromAttrs(attrs :StringAttributeRecord) :StringAttrib
 export const blockPNames = ["doc", "garagraph", "blockquote", "bulletlist", "orderedlist"] as const;
 export type BlockPTypes = typeof blockPNames[number];
 
+//没有自带paragraph，但能容纳其他东西的区块
 export const blockNPNames = ["columncontainer", "docLinkBlock"] as const;
 export type BlockNPTypes = typeof blockNPNames[number];
 
-export type BlockTypes = BlockPTypes | BlockNPTypes | "paragraph";
+//不能容纳任何节点的区块
+export const blockANames = ["horizontalRule", "image", "iframe"] as const;
+export type BlockATypes = typeof blockANames[number];
+
+export type BlockTypes = BlockPTypes | BlockNPTypes | BlockATypes | "paragraph";
+
+export type BlockJSON<T extends BlockTypes> = T extends BlockPTypes ? BlockPJSON<T> : T extends BlockNPTypes ? BlockNPJSON<T> : T extends BlockATypes ? BlockAJSON<T> : T extends "paragraph" ? ParagraphJSON : never;
 
 export interface BlockNPJSON<T extends BlockNPTypes>{
     id :UUID;
@@ -143,6 +150,14 @@ export interface BlockPJSON<T extends BlockPTypes>{
     };
 }
 
+//`BlockAtomic`
+export interface BlockAJSON<T extends BlockATypes>{
+    id :UUID;
+    deleted :boolean;
+    type :T;
+    attrs :StringAttributeRecord;
+}
+
 //现在 `paragraph` 是唯一可以容纳行内节点的东西了
 export interface ParagraphJSON{
     id :UUID;
@@ -151,31 +166,33 @@ export interface ParagraphJSON{
     content :InlineJSON<InlineTypes>[];
 }
 
-export type BlockJSON<T extends BlockTypes> = T extends "paragraph" ? ParagraphJSON : T extends BlockNPTypes ? BlockNPJSON<T> : T extends BlockPTypes ? BlockPJSON<T> : never;
 
 //#endregion
 
 //#region 行内元素类型
 
-export function toFormattedInline(content :JSONContent[]) :InlineJSON<InlineTypes>[]{
-    const result :InlineJSON<InlineTypes>[] = [];
+export function toFormattedInline(content :JSONContent[] | null) :InlineJSON<InlineTypes>[]{
     console.log(content);
-    for(let i = 0; i < content.length; i++){
-        if(inlineTNames.includes(content[i].type! as InlineTTypes)){
-            result.push({
-                type: content[i].type,
-                text: content[i].text
-            } as InlineTJSON<InlineTTypes>);
-            if("attrs" in content[i]) result.at(-1)!.attrs = content[i].attrs;
-            //不检查mark type合法性
-            if("marks" in content[i]) result.at(-1)!.marks = content[i].marks as MarkJSON<MarkTypes>[];
+    if(content === null) return [];
+    else{
+        const result :InlineJSON<InlineTypes>[] = [];
+        for(let i = 0; i < content.length; i++){
+            if(inlineTNames.includes(content[i].type! as InlineTTypes)){
+                result.push({
+                    type: content[i].type,
+                    text: content[i].text
+                } as InlineTJSON<InlineTTypes>);
+                if("attrs" in content[i]) result.at(-1)!.attrs = content[i].attrs;
+                //不检查mark type合法性
+                if("marks" in content[i]) result.at(-1)!.marks = content[i].marks as MarkJSON<MarkTypes>[];
+            }
+            //肯定是InlineNTTypes，目前没有这部分的节点，先不做
+            else{
+
+            }
         }
-        //肯定是InlineNTTypes，目前没有这部分的节点，先不做
-        else{
-            
-        }
+        return result;
     }
-    return result;
 }
 
 export const inlineNTNames = ["mension", "time"] as const;

@@ -3,9 +3,11 @@
     flex-flow: column nowrap;
 }
 .entry{
-    display: flex;
-    flex-flow: row nowrap;
     padding: 0 .5rem;
     color: var(--c-grey);
     font-weight: bold;
+    width: calc(100% - calc(.5rem * 2));
+    overflow-x: clip;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }

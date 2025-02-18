@@ -9,6 +9,7 @@ import { configTable } from "../../data/db";
 import { Table } from "dexie";
 import { DcConfigEntry } from "../../data/config";
 import { getPx } from "../../utils/css";
+import Manul from "../../sideRequests/Manul/Manul";
 
 export const defaultSidebarWidth = 200;
 
@@ -41,6 +42,7 @@ export default function Sidebar(){
         <div className={styles.inner}>
             <TopMenu />
             <DocumentList />
+            <Manul scale={0.2} />
             <BottomMenu />
         </div>
         <Resizer setWidth={setWidth} />

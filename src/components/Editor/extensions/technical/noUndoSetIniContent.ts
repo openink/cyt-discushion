@@ -17,6 +17,7 @@ const NoUndoSetIniContent = Extension.create({
             tr.setMeta("triggerSave", false);
             tr.setDocAttribute("id", content.attrs!.id);
             //Emit update for debug use.
+            commands.focus("end");
             return commands.setContent(content, true);
         }
     }}

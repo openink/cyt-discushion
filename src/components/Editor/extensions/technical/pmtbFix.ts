@@ -19,7 +19,7 @@ const PmtbFix = Extension.create({
                         selectedNodes.push({node, pos});
                         if(node.type.name === "paragraph") return false;
                     });
-                    console.log(selectedNodes);
+                    //console.log(selectedNodes);
                     const
                     emptyFrom = selectedNodes[0].node.textContent === "",
                     emptyTo = selectedNodes.at(-1)!.node.textContent === "";
@@ -42,7 +42,7 @@ const PmtbFix = Extension.create({
                     }
                 }
             }},
-            handleDoubleClickOn(view, pos, node, nodePos, event, direct){
+            handleDoubleClickOn(view, pos, node, nodePos){
                 if(node.type.name === "paragraph"){
                     const { state, dispatch } = view, { doc, tr } = state;
                     if(node.textContent === ""){

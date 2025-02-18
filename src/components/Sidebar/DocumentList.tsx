@@ -2,6 +2,8 @@
 import { blockTable } from "../../data/db";
 import { useLiveQuery } from "dexie-react-hooks";
 import { BlockPJSON, InlineTJSON, InlineTTypes } from "../../data/block";
+import { useContext } from "react";
+import { DocumentIdContext } from "../App/App";
 
 export default function DocumentList(){
     const documents = useLiveQuery(async ()=>await blockTable.where("type").equals("doc").toArray(), []) as BlockPJSON<"doc">[] | undefined;
@@ -10,8 +12,9 @@ export default function DocumentList(){
     </div>);
 }
 
-function Document({data} :{data :BlockPJSON<"doc">}){
-    return(<div className={styles.entry}>
+function Document({ data } :{ data :BlockPJSON<"doc"> }){
+    const { setDocumentId } = useContext(DocumentIdContext);
+    return(<div className={styles.entry} role="button" onClick={()=>setDocumentId!(data.id!)}>
         {data.p.content.map(inline=>(inline as InlineTJSON<InlineTTypes>).text ?? "").join("")}
     </div>);
 }

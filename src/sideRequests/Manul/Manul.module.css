@@ -1,1 +1,20 @@
-﻿
+﻿.outer{
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    margin-top: auto;
+    margin-bottom: -1.5rem;
+}
+.inner{
+    cursor: pointer;
+    opacity: .15;
+    transition: opacity .3s;
+}
+.inner:hover{
+    opacity: 0.6;
+}
+.img{
+    height: 100%;
+    min-width: 100%;
+}

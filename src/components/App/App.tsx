@@ -1,12 +1,18 @@
 import Editor from "../Editor/Editor";
 import Sidebar from "../Sidebar/Sidebar";
 import Debug from "../Debug/Debug";
-import { useEffect, useState } from "react";
+import { createContext, Dispatch, SetStateAction, useEffect, useState } from "react";
 import { configTable } from "../../data/db";
 import { newDocument, UUID } from "../../data/block";
 import { Table } from "dexie";
 import { DcConfigEntry } from "../../data/config";
 import meta from "../../data/meta";
+import TicklingCat from "../../sideRequests/TicklingCat/TicklingCat";
+
+export const DocumentIdContext = createContext({
+    documentId: "" as UUID,
+    setDocumentId: null as Dispatch<SetStateAction<UUID>> | null
+})
 
 export default function App(){
     const
@@ -21,9 +27,10 @@ export default function App(){
         //else if()
         else setDocumentId(currentDocument.value);
     })()}, []);
-    return(<>
+    return(<DocumentIdContext.Provider value={{ documentId, setDocumentId }}>
+        <TicklingCat />
         {meta.dev ? <Debug cursorAnchor={cursorAnchor} cursorFocus={cursorFocus} docSize={docSize} /> : null}
         <Sidebar />
-        <Editor debug={{setCursorAnchor, setDocSize, setCursorFocus}} documentId={documentId} />
-    </>);
+        <Editor debug={{setCursorAnchor, setDocSize, setCursorFocus}} />
+    </DocumentIdContext.Provider>);
 }

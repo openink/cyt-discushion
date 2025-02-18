@@ -3,11 +3,11 @@ import "./css/editor.css";
 import "./css/editor.color.css";
 import "./css/trailingbreak.css";
 
-import { getDocument, UUID } from "../../data/block";
-import PopupMenu from "./PopupMenu";
-
-import { Dispatch, SetStateAction, useCallback, useEffect, useRef } from "react";
+import { Dispatch, SetStateAction, useCallback, useContext, useEffect, useRef } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
+import { DocumentIdContext } from "../App/App";
+import { getDocument } from "../../data/block";
+import PopupMenu from "./PopupMenu";
 
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import HorizontalRule from "@tiptap/extension-horizontal-rule";
@@ -17,6 +17,7 @@ import TextStyle from "@tiptap/extension-text-style";
 import History from "@tiptap/extension-history";
 import BlockID from "./extensions/technical/blockID";
 import NoUndoSetIniContent from "./extensions/technical/noUndoSetIniContent";
+import CtrlA from "./extensions/technical/ctrla";
 import ClearMarks from "./extensions/technical/clearMarks";
 import TrailingP from "./extensions/technical/trailingP";
 import PmtbFix from "./extensions/technical/pmtbFix";
@@ -48,7 +49,6 @@ import BubbleMenu from "@tiptap/extension-bubble-menu";
 import Garagraph from "./extensions/block/garagraph";
 
 type Props = {
-    documentId :UUID;
     debug :{
         setCursorAnchor :Dispatch<SetStateAction<number>>;
         setDocSize :Dispatch<SetStateAction<number>>;
@@ -58,12 +58,13 @@ type Props = {
 
 const lowlight = createLowlight(all);
 
-export default function Editor({documentId, debug} :Props){
+export default function Editor({ debug } :Props){
     const
+    { documentId, setDocumentId } = useContext(DocumentIdContext),
     editor = useEditor({
         extensions: [
             //技术性扩展
-            History, BlockID, NoUndoSetIniContent, ClearMarks, TrailingP, PmtbFix, Copy,
+            History, BlockID, NoUndoSetIniContent, CtrlA, ClearMarks, TrailingP, PmtbFix, Copy,
             BubbleMenu.configure({
                 updateDelay: 250,
                 tippyOptions: {
@@ -113,6 +114,7 @@ export default function Editor({documentId, debug} :Props){
         onUpdate(props){
             //不是props.editor.state.doc.nodeSize！https://prosemirror.net/docs/guide/#doc:~:text=Note%20that%20for%20the%20outer%20document%20node%2C%20the%20open%20and%20close%20tokens%20are%20not%20considered%20part%20of%20the%20document%20(because%20you%20can%27t%20put%20your%20cursor%20outside%20of%20the%20document)%2C%20so%20the%20size%20of%20a%20document%20is%20doc.content.size%2C%20not%20doc.nodeSize.
             debug.setDocSize(props.editor.state.doc.content.size);
+            console.log(props.editor);
         }
     }),
     //自动新增末尾段落（trailing paragraph）
@@ -122,6 +124,8 @@ export default function Editor({documentId, debug} :Props){
         if(
             //点击发生在最外层包装div，不是在节点里
             event.target === editorOuter.current?.childNodes[0]
+            //鼠标点击在所有区块的下面，酌情加几px
+         && event.pageY > (editorOuter.current?.childNodes[0].lastChild! as HTMLElement).getBoundingClientRect().bottom + 8
             //选区为空
          && state.selection.empty
             //选区所在区块是最后一个区块。由于进入/离开doc不算1单位，所以多算了这部分，要减去1单位
