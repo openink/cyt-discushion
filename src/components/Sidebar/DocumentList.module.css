@@ -1,13 +1,32 @@
 ﻿.container{
+    flex: 1;
     display: flex;
     flex-flow: column nowrap;
+    overflow-y: auto;
+    margin: .25rem 0;
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: 100% auto;
 }
 .entry{
-    padding: 0 .5rem;
+    padding: .1875rem .25rem;
+    margin: 0 .25rem;
+    width: calc(100% - calc(.25rem * 2) - calc(.25rem * 2));
     color: var(--c-grey);
-    font-weight: bold;
-    width: calc(100% - calc(.5rem * 2));
+    background-color: transparent;
+    border-radius: .25rem;
     overflow-x: clip;
     white-space: nowrap;
     text-overflow: ellipsis;
+    cursor: pointer;
+}
+.entry:hover, .entry:active{
+    background-color: #00000010;
+}
+.entry:hover:active{
+    background-color: #00000020;
+    transition-duration: .05s;
+}
+.active{
+    font-weight: bold;
 }
