@@ -18,7 +18,6 @@ export default function DocumentList(){
 
 function Document({ data } :{ data :BlockPJSON<"doc"> }){
     const { documentId, setDocumentId } = useContext(DocumentIdContext);
-    console.log(documentId, data.id);
     return(<div className={`${styles.entry} ${mainStyles.noselect}${documentId === data.id ? ` ${styles.active}` : ""}`} role="button" onClick={()=>setDocumentId!(data.id!)}>
         {data.p.content.map(inline=>(inline as InlineTJSON<InlineTTypes>).text ?? "").join("")}
     </div>);
